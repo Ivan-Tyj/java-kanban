@@ -26,7 +26,6 @@ public class TaskManager {
     public HashMap<Integer, Task> getSubTaskList() {
         return subTaskList;
     }
-
     public ArrayList getListOfTask(HashMap map) {
         ArrayList<Object> listOfTasks = new ArrayList<>(map.size());
         listOfTasks.addAll(map.values());
