@@ -95,7 +95,6 @@ public class TaskManager {
     public void updateSub(Integer key, SubTask newSub) {
         subTaskList.put(key, newSub);
     }
-
     public void removeTask(Integer key) {
         taskList.remove(key);
     }
