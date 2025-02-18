@@ -101,12 +101,12 @@ public class Main {
         System.out.println("Создание задачи");
         System.out.println("Введите параметры: ");
         System.out.println("Наименование: ");
-        String name = scanner.nextLine();
+        String name = scanner.next();
         System.out.println("Описание: ");
-        String description = scanner.nextLine();
+        String description = scanner.next();
         System.out.println("Статус: 1 - новая, 2 - выполняется, 3 - выполнена");
-        int statusCommand = scanner.nextInt();
         Status status = null;
+        int statusCommand = scanner.nextInt();
         if (statusCommand == 1) {
             status = Status.NEW;
         } else if (statusCommand == 2) {
