@@ -6,6 +6,7 @@ public class Task {
     private String name;
     private String description;
     private Status status;
+    private int taskId;
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -31,29 +32,24 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if ((obj == null) || (this.getClass() != obj.getClass())) return false;
         Task otherTask = (Task) obj;
-        return Objects.equals(name, otherTask.name) &&
-                Objects.equals(description, otherTask.description) &&
-                Objects.equals(status, otherTask.status);
+        return Objects.equals(taskId, otherTask.taskId);
     }
     @Override
     public int hashCode() {
-        int hash = 11;
-        if (name != null) {
-            hash += name.hashCode();
-        }
-        hash *= 13;
-        if (description != null) {
-            hash += description.hashCode();
-        }
-        hash *= 31;
-        if (status != null) {
-            hash += status.hashCode();
-        }
-        return hash;
+        return taskId;
     }
 }
