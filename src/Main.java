@@ -4,7 +4,6 @@ import Tasks.Status;
 import Tasks.SubTask;
 import Tasks.Task;
 
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -51,6 +50,7 @@ public class Main {
 
         }
     }
+
     public static void printMenu() {
         System.out.println("Выберите пункт меню: ");
         System.out.println("1 - Получение списка задач");
@@ -62,6 +62,7 @@ public class Main {
         System.out.println("7 - Получить список подзадач определенного эпика");
         System.out.println("0 - Выход");
     }
+
     public static void printTasksList(Scanner scanner, TaskManager taskManager) {
         System.out.println("Получение списка задач");
         printMenuManager();
@@ -74,6 +75,7 @@ public class Main {
             taskManager.getSubTaskList();
         }
     }
+
     public static void clearTasks(Scanner scanner, TaskManager taskManager) {
         System.out.println("Удаление задач");
         printMenuManager();
@@ -87,6 +89,7 @@ public class Main {
         }
         System.out.println("Все задачи удалены");
     }
+
     public static void findTask(Scanner scanner, TaskManager taskManager) {
         System.out.println("Поиск задач");
         System.out.println("Введите идентификатор задачи");
@@ -101,6 +104,7 @@ public class Main {
             taskManager.findSub(findTaskId);
         }
     }
+
     public static void createTask(Scanner scanner, TaskManager taskManager) {
         System.out.println("Создание задачи");
         System.out.println("Введите параметры: ");
@@ -148,6 +152,7 @@ public class Main {
                 break;
         }
     }
+
     public static void updateOldTask(Scanner scanner, TaskManager taskManager) {
         System.out.println("Обновление задачи");
         Task oldTask = null;
@@ -205,6 +210,7 @@ public class Main {
             System.out.println("Задача c идентификатором: " + updateId + " - обновлена");
         }
     }
+
     public static void removeTask(Scanner scanner, TaskManager taskManager) {
         System.out.println("Удаление задачи");
         printMenuManager();
@@ -219,6 +225,7 @@ public class Main {
             taskManager.removeSub(removeTaskId);
         }
     }
+
     public static void printMenuManager() {
         System.out.println("Выберите тип задач");
         System.out.println("1 - Задачи");
