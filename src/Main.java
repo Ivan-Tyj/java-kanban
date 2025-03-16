@@ -1,3 +1,5 @@
+import Manager.HistoryManager;
+import Manager.Managers;
 import Manager.TaskManager;
 import Tasks.Epic;
 import Tasks.Status;
@@ -10,7 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        TaskManager taskManager = new TaskManager();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        HistoryManager getDefaultHistory = Managers.getDefaultHistory();
 
         System.out.println("Приветствую!");
         while (true) {
@@ -18,27 +21,35 @@ public class Main {
             int command = scanner.nextInt();
             switch (command) {
                 case 1:
-                    printTasksList(scanner, taskManager);
+                    printTasksList(scanner, inMemoryTaskManager);
                     break;
                 case 2:
-                    clearTasks(scanner, taskManager);
+                    clearTasks(scanner, inMemoryTaskManager);
                     break;
                 case 3:
-                    findTask(scanner, taskManager);
+                    findTask(scanner, inMemoryTaskManager);
                     break;
                 case 4:
-                    createTask(scanner, taskManager);
+                    createTask(scanner, inMemoryTaskManager);
                     break;
                 case 5:
-                    updateOldTask(scanner, taskManager);
+                    updateOldTask(scanner, inMemoryTaskManager);
                     break;
                 case 6:
-                    removeTask(scanner, taskManager);
+                    removeTask(scanner, inMemoryTaskManager);
                     break;
                 case 7:
                     System.out.println("Введите идентификатор эпика");
                     int epicKey = scanner.nextInt();
-                    taskManager.subForEpic(epicKey);
+                    inMemoryTaskManager.subForEpic(epicKey);
+                    break;
+                case 8:
+                    System.out.println("Вывод истории просмотра");
+                    getDefaultHistory.getHistory();
+                    break;
+                case 9:
+                    System.out.println("Напечатать все задачи");
+                    printAllTasks(inMemoryTaskManager, getDefaultHistory);
                     break;
                 case 0:
                     System.out.println("Выход");
@@ -60,6 +71,8 @@ public class Main {
         System.out.println("5 - Обновить задачу");
         System.out.println("6 - Удалить задачу по идентификатору");
         System.out.println("7 - Получить список подзадач определенного эпика");
+        System.out.println("8 - Вывести историю просмотра задач");
+        System.out.println("9 - Напечатать все задачи");
         System.out.println("0 - Выход");
     }
 
@@ -105,7 +118,7 @@ public class Main {
         }
     }
 
-    public static void createTask(Scanner scanner, TaskManager taskManager) {
+    public static void createTask(Scanner scanner, TaskManager inMemoryTaskManager) {
         System.out.println("Создание задачи");
         System.out.println("Введите параметры: ");
         System.out.println("Наименование: ");
@@ -128,21 +141,23 @@ public class Main {
         int commandCreate = scanner.nextInt();
         switch (commandCreate) {
             case 1:
-                taskManager.addTask(new Task(name, description, status));
-                System.out.println("Задача: " + name + " - добавлена, с идентификатором: " + taskManager.getTaskId());
+                inMemoryTaskManager.addTask(new Task(name, description, status));
+                System.out.println("Задача: " + name + " - добавлена, с идентификатором: "
+                        + inMemoryTaskManager);
                 break;
             case 2:
                 status = Status.NEW;
-                taskManager.addEpic(new Epic(name, description, status));
-                System.out.println("Эпик: " + name + " - добавлен, с идентификатором: " + taskManager.getTaskId());
+                inMemoryTaskManager.addEpic(new Epic(name, description, status));
+                System.out.println("Эпик: " + name + " - добавлен, с идентификатором: "
+                        + inMemoryTaskManager.getTaskId());
                 break;
             case 3:
                 System.out.println("Введите идентификатор эпика, в рамках которого выполняется подзадача");
                 int epicId = scanner.nextInt();
-                if (taskManager.findEpicForSub(epicId)) {
-                    taskManager.addSub(new SubTask(name, description, status, epicId));
+                if (inMemoryTaskManager.findEpicForSub(epicId)) {
+                    inMemoryTaskManager.addSub(new SubTask(name, description, status, epicId));
                     System.out.println("Подзадача: " + name + " - добавлена, с идентификатором: "
-                            + taskManager.getTaskId() + ", в эпик с идентификатором: " + epicId);
+                            + inMemoryTaskManager.getTaskId()+ ", в эпик с идентификатором: " + epicId);
                 } else {
                     System.out.println("Идентификатор эпика введён неверно");
                 }
@@ -223,6 +238,31 @@ public class Main {
             taskManager.removeEpic(removeTaskId);
         } else if (removeCommand == 3) {
             taskManager.removeSub(removeTaskId);
+        }
+    }
+    private static void printAllTasks(TaskManager manager, HistoryManager historyManager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getTaskList()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getEpicTaskList()) {
+            System.out.println(epic);
+
+            for (SubTask task : manager.getSubTaskList()) {
+                if (epic.getTaskId() == task.getEpicId()) {
+                    System.out.println("--> " + task);
+                }
+            }
+        }
+        System.out.println("Подзадачи:");
+        for (Task subtask : manager.getSubTaskList()) {
+            System.out.println(subtask);
+        }
+
+        System.out.println("История:");
+        for (Object task : historyManager.getHistory()) {
+            System.out.println(task);
         }
     }
 
