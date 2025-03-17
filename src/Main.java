@@ -13,7 +13,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         TaskManager inMemoryTaskManager = Managers.getDefault();
-        HistoryManager getDefaultHistory = Managers.getDefaultHistory();
 
         System.out.println("Приветствую!");
         while (true) {
@@ -45,11 +44,11 @@ public class Main {
                     break;
                 case 8:
                     System.out.println("Вывод истории просмотра");
-                    getDefaultHistory.getHistory();
+                    inMemoryTaskManager.getHistory();
                     break;
                 case 9:
                     System.out.println("Напечатать все задачи");
-                    printAllTasks(inMemoryTaskManager, getDefaultHistory);
+                    printAllTasks(inMemoryTaskManager);
                     break;
                 case 0:
                     System.out.println("Выход");
@@ -148,16 +147,14 @@ public class Main {
             case 2:
                 status = Status.NEW;
                 inMemoryTaskManager.addEpic(new Epic(name, description, status));
-                System.out.println("Эпик: " + name + " - добавлен, с идентификатором: "
-                        + inMemoryTaskManager.getTaskId());
+                System.out.println("Эпик: " + name + " - добавлен");
                 break;
             case 3:
                 System.out.println("Введите идентификатор эпика, в рамках которого выполняется подзадача");
                 int epicId = scanner.nextInt();
                 if (inMemoryTaskManager.findEpicForSub(epicId)) {
                     inMemoryTaskManager.addSub(new SubTask(name, description, status, epicId));
-                    System.out.println("Подзадача: " + name + " - добавлена, с идентификатором: "
-                            + inMemoryTaskManager.getTaskId()+ ", в эпик с идентификатором: " + epicId);
+                    System.out.println("Подзадача: " + name + " - добавлена");
                 } else {
                     System.out.println("Идентификатор эпика введён неверно");
                 }
@@ -240,7 +237,7 @@ public class Main {
             taskManager.removeSub(removeTaskId);
         }
     }
-    private static void printAllTasks(TaskManager manager, HistoryManager historyManager) {
+    private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTaskList()) {
             System.out.println(task);
@@ -261,7 +258,7 @@ public class Main {
         }
 
         System.out.println("История:");
-        for (Object task : historyManager.getHistory()) {
+        for (Object task : manager.getHistory()) {
             System.out.println(task);
         }
     }

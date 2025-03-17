@@ -7,7 +7,6 @@ import Tasks.Task;
 import java.util.ArrayList;
 
 public interface TaskManager {
-    int getTaskId();
 
     ArrayList<Task> getTaskList();
 
@@ -35,8 +34,6 @@ public interface TaskManager {
 
     void addSub(SubTask sub);
 
-    void epicStatus(SubTask subTask);
-
     void updateTask(Task newTask);
 
     void updateEpic(Epic newEpic);
@@ -49,6 +46,8 @@ public interface TaskManager {
 
     void removeSub(Integer key);
 
-    ArrayList subForEpic(int epicKey);
+    ArrayList<Task> subForEpic(int epicKey);
+
+    ArrayList<Task> getHistory();
 
 }
