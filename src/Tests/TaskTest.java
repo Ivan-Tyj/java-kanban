@@ -13,7 +13,8 @@ class TaskTest {
     void ifTaskIdEqualsOtherTaskId() {
         Task firstTask = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(firstTask);
+        int epicId = inMemoryTaskManager.getTaskList().indexOf(firstTask) + 1;
 
-        Assertions.assertEquals(firstTask.getTaskId(), inMemoryTaskManager.getTaskId(), "Таски равны по Id");
+        Assertions.assertEquals(firstTask.getTaskId(), epicId, "Таски равны по Id");
     }
 }

@@ -3,12 +3,8 @@ package Tests;
 import Manager.InMemoryTaskManager;
 import Tasks.Epic;
 import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
@@ -17,7 +13,8 @@ class EpicTest {
     void ifEpicIdEqualsOtherEpicId() {
         Epic firstEpic = new Epic("epic1", "epic1 description", Status.NEW);
         inMemoryTaskManager.addEpic(firstEpic);
+        int epicId = inMemoryTaskManager.getEpicTaskList().indexOf(firstEpic) + 1;
 
-        Assertions.assertEquals(firstEpic.getTaskId(), inMemoryTaskManager.getTaskId(), "Epic равны по Id");
+        Assertions.assertEquals(firstEpic.getTaskId(), epicId, "Epic равны по Id");
     }
 }

@@ -103,7 +103,8 @@ class InMemoryTaskManagerTest {
     void addTask() {
         Task task = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task);
-        assertTrue(inMemoryTaskManager.getTaskId() > 0);
+        int taskId = inMemoryTaskManager.getTaskList().indexOf(task) + 1;
+        assertTrue(taskId > 0);
         assertFalse(inMemoryTaskManager.getTaskList().isEmpty());
         assertFalse(getDefaultHistory.getHistory().isEmpty());
     }
@@ -112,7 +113,8 @@ class InMemoryTaskManagerTest {
     void addEpic() {
         Epic epic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(epic);
-        assertTrue(inMemoryTaskManager.getTaskId() > 0);
+        int epicId = inMemoryTaskManager.getEpicTaskList().indexOf(epic) + 1;
+        assertTrue(epicId > 0);
         assertFalse(inMemoryTaskManager.getEpicTaskList().isEmpty());
         assertFalse(getDefaultHistory.getHistory().isEmpty());
     }
