@@ -95,7 +95,7 @@ class InMemoryTaskManagerTest {
         SubTask subTask = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());
         inMemoryTaskManager.addSub(subTask);
         SubTask findSubTask = inMemoryTaskManager.findSub(subTask.getTaskId());
-        Assertions.assertEquals(subTask.getTaskId(), findSubTask.getTaskId(), "Подзадача найден");
+        Assertions.assertEquals(subTask.getTaskId(), findSubTask.getTaskId(), "Подзадача найдена");
         assertFalse(getDefaultHistory.getHistory().isEmpty());
     }
 

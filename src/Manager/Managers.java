@@ -1,8 +1,8 @@
 package Manager;
 
 public abstract class Managers {
-    private static TaskManager IN_MEMORY_TASK_MANAGER  = new InMemoryTaskManager();
-    private static InMemoryHistoryManager IN_MEMORY_HISTORY_MANAGER = new InMemoryHistoryManager();
+    private static final TaskManager IN_MEMORY_TASK_MANAGER  = new InMemoryTaskManager();
+    private static final InMemoryHistoryManager IN_MEMORY_HISTORY_MANAGER = new InMemoryHistoryManager();
 
 
     public static TaskManager getDefault() {

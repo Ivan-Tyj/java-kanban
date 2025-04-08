@@ -114,7 +114,7 @@ public class InMemoryTaskManager implements TaskManager {
         getDefaultHistory.add(sub);
     }
 
-    public void epicStatus(SubTask subTask) {
+    void epicStatus(SubTask subTask) {
         int statusNew = 0;
         int statusDone = 0;
         int statusInProgress = 0;
@@ -200,6 +200,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
     @Override
     public ArrayList<Task> getHistory() {
-        return getDefaultHistory.getHistory();
+        return (ArrayList<Task>) getDefaultHistory.getHistory();
     }
 }
