@@ -1,9 +1,9 @@
 import manager.Managers;
 import manager.TaskManager;
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import allTask.Epic;
+import allTask.Status;
+import allTask.SubTask;
+import allTask.Task;
 
 import java.util.Scanner;
 

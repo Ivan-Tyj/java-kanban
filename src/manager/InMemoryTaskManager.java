@@ -1,9 +1,9 @@
 package manager;
 
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import allTask.Epic;
+import allTask.Status;
+import allTask.SubTask;
+import allTask.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;

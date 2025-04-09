@@ -1,4 +1,4 @@
-package Tasks;
+package allTask;
 
 public class SubTask extends Task {
 

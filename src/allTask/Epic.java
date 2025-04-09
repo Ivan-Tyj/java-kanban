@@ -1,4 +1,4 @@
-package Tasks;
+package allTask;
 
 public class Epic extends Task{
 
