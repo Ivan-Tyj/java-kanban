@@ -1,5 +1,3 @@
-package test;
-
 import manager.InMemoryTaskManager;
 import tasks.Status;
 import tasks.Task;

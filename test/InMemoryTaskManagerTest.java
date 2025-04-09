@@ -1,5 +1,3 @@
-package test;
-
 import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
