@@ -32,6 +32,7 @@ public class InMemoryHistoryManager implements HistoryManager{
         Node<Task> otherNode = historyMap.get(id);
         removeNode(otherNode);
     }
+    
     private void linkLast(Task task) {
         if (first == null) {
             first = new Node<>(null, task, null);
