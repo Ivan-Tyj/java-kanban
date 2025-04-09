@@ -1,8 +1,8 @@
 package test;
 
 import manager.InMemoryTaskManager;
-import all_task.Epic;
-import all_task.Status;
+import tasks.Epic;
+import tasks.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

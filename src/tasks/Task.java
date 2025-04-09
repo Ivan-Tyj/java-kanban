@@ -1,4 +1,4 @@
-package all_task;
+package tasks;
 
 import java.util.Objects;
 

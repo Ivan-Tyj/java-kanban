@@ -1,4 +1,4 @@
-package all_task;
+package tasks;
 
 public class Epic extends Task{
 
