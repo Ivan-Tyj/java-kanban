@@ -198,6 +198,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return subForEpic;
     }
+
     @Override
     public ArrayList<Task> getHistory() {
         return (ArrayList<Task>) getDefaultHistory.getHistory();
