@@ -236,6 +236,7 @@ public class Main {
             taskManager.removeSub(removeTaskId);
         }
     }
+
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTaskList()) {
