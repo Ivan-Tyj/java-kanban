@@ -10,6 +10,7 @@ class ManagersTest {
     void getDefault() {
         assertNotNull(Managers.getDefault());
     }
+
     @Test
     void getDefaultHistory() {
         assertNotNull(Managers.getDefaultHistory());
