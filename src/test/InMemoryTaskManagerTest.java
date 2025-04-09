@@ -1,8 +1,8 @@
 package test;
 
-import Manager.HistoryManager;
-import Manager.InMemoryTaskManager;
-import Manager.Managers;
+import manager.HistoryManager;
+import manager.InMemoryTaskManager;
+import manager.Managers;
 import Tasks.Epic;
 import Tasks.Status;
 import Tasks.SubTask;

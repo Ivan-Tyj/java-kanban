@@ -1,6 +1,5 @@
-import Manager.HistoryManager;
-import Manager.Managers;
-import Manager.TaskManager;
+import manager.Managers;
+import manager.TaskManager;
 import Tasks.Epic;
 import Tasks.Status;
 import Tasks.SubTask;
