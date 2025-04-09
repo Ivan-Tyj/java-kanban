@@ -3,10 +3,10 @@ package test;
 import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
-import allTask.Epic;
-import allTask.Status;
-import allTask.SubTask;
-import allTask.Task;
+import all_task.Epic;
+import all_task.Status;
+import all_task.SubTask;
+import all_task.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -2,8 +2,8 @@ package test;
 
 import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
-import allTask.Status;
-import allTask.Task;
+import all_task.Status;
+import all_task.Task;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
