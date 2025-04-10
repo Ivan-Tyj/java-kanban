@@ -1,9 +1,9 @@
 package manager;
 
 public class Node<E> {
-    E item;
-    Node<E> next;
-    Node<E> prev;
+    public E item;
+    public Node<E> next;
+    public Node<E> prev;
 
     Node(Node<E> prev, E element, Node<E> next) {
         this.item = element;

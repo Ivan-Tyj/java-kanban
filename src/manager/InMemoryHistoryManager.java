@@ -14,12 +14,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (!historyMap.containsKey(task.getTaskId())) {
-            linkLast(task);
-        } else {
+        if (historyMap.containsKey(task.getTaskId())) {
             remove(task.getTaskId());
-            linkLast(task);
         }
+        linkLast(task);
     }
 
     @Override
@@ -34,57 +32,43 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void linkLast(Task task) {
-        if (first == null) {
-            first = new Node<>(null, task, null);
+        Node<Task> l = last;
+        Node<Task> newNode = new Node<>(l, task, null);
+        last = newNode;
+        if (l == null) {
+            first = newNode;
             historyMap.put(task.getTaskId(), first);
         } else {
-            Node<Task> l = last;
-            Node<Task> newNode = new Node<>(l, task, null);
-            last = newNode;
-            if (l == null) {
-                first = newNode;
-                historyMap.put(task.getTaskId(), first);
-            } else {
-                l.next = newNode;
-                historyMap.put(task.getTaskId(), l.next);
-            }
+            l.next = newNode;
+            historyMap.put(task.getTaskId(), l.next);
         }
     }
 
     public ArrayList<Task> getTasks() {
         ArrayList<Task> list = new ArrayList<>();
-        for (Node<Task> x = first; x != null; x = x.next) {
-            list.add(x.item);
+        for (Node<Task> node = first; node != null; node = node.next) {
+            list.add(node.item);
         }
         return list;
     }
 
     public void removeNode(Node<Task> node) {
-        Node<Task> prevNode;
-        Node<Task> nextNode;
-        if (node.prev != null && node.next != null) {
-            prevNode = historyMap.get(node.prev.item.getTaskId());
-            nextNode = historyMap.get(node.next.item.getTaskId());
+        Node<Task> prevNode = node.prev;
+        Node<Task> nextNode = node.next;
+
+        if (prevNode == null) {
+            first = nextNode;
+        } else {
             prevNode.next = nextNode;
             historyMap.put(prevNode.item.getTaskId(), prevNode);
+        }
+
+        if (nextNode == null) {
+            last = prevNode;
+        } else {
             nextNode.prev = prevNode;
             historyMap.put(nextNode.item.getTaskId(), nextNode);
-            historyMap.remove(node.item.getTaskId());
-        } else if (node.prev == null && node.next != null) {
-            nextNode = historyMap.get(node.next.item.getTaskId());
-            nextNode.prev = null;
-            historyMap.put(nextNode.item.getTaskId(), nextNode);
-            historyMap.remove(node.item.getTaskId());
-            first = null;
-        } else if (node.prev != null && node.next == null) {
-            prevNode = historyMap.get(node.prev.item.getTaskId());
-            prevNode.next = null;
-            historyMap.put(prevNode.item.getTaskId(), prevNode);
-            historyMap.remove(node.item.getTaskId());
-            last = null;
-        } else {
-            historyMap.remove(node.item.getTaskId());
-            first = null;
         }
+        historyMap.remove(node.item.getTaskId());
     }
 }
