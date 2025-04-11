@@ -1,8 +1,6 @@
-package Tests;
-
-import Manager.InMemoryTaskManager;
-import Tasks.Epic;
-import Tasks.Status;
+import manager.InMemoryTaskManager;
+import tasks.Epic;
+import tasks.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

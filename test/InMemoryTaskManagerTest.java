@@ -1,12 +1,10 @@
-package Tests;
-
-import Manager.HistoryManager;
-import Manager.InMemoryTaskManager;
-import Manager.Managers;
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import manager.HistoryManager;
+import manager.InMemoryTaskManager;
+import manager.Managers;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -95,7 +93,7 @@ class InMemoryTaskManagerTest {
         SubTask subTask = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());
         inMemoryTaskManager.addSub(subTask);
         SubTask findSubTask = inMemoryTaskManager.findSub(subTask.getTaskId());
-        Assertions.assertEquals(subTask.getTaskId(), findSubTask.getTaskId(), "Подзадача найден");
+        Assertions.assertEquals(subTask.getTaskId(), findSubTask.getTaskId(), "Подзадача найдена");
         assertFalse(getDefaultHistory.getHistory().isEmpty());
     }
 

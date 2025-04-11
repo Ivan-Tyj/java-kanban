@@ -1,9 +1,9 @@
-package Manager;
+package manager;
 
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +114,7 @@ public class InMemoryTaskManager implements TaskManager {
         getDefaultHistory.add(sub);
     }
 
-    public void epicStatus(SubTask subTask) {
+    void epicStatus(SubTask subTask) {
         int statusNew = 0;
         int statusDone = 0;
         int statusInProgress = 0;
@@ -198,8 +198,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return subForEpic;
     }
+
     @Override
     public ArrayList<Task> getHistory() {
-        return getDefaultHistory.getHistory();
+        return (ArrayList<Task>) getDefaultHistory.getHistory();
     }
 }
