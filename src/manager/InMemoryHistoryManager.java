@@ -37,11 +37,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         last = newNode;
         if (l == null) {
             first = newNode;
-            historyMap.put(task.getTaskId(), first);
         } else {
             l.next = newNode;
-            historyMap.put(task.getTaskId(), l.next);
         }
+        historyMap.put(task.getTaskId(), newNode);
     }
 
     public ArrayList<Task> getTasks() {

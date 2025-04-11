@@ -1,11 +1,11 @@
 package manager;
 
 public class Node<E> {
-    public E item;
-    public Node<E> next;
-    public Node<E> prev;
+    protected E item;
+    protected Node<E> next;
+    protected Node<E> prev;
 
-    Node(Node<E> prev, E element, Node<E> next) {
+    protected Node(Node<E> prev, E element, Node<E> next) {
         this.item = element;
         this.next = next;
         this.prev = prev;
