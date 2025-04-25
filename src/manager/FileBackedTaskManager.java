@@ -3,9 +3,7 @@ package manager;
 import tasks.*;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,16 +148,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 String line;
                 if (list.get(i).getType() == Type.EPIC) {
                     epic = getEpicTaskList().get(i);
-                    line = ("\n" + epic.getTaskId() + "," + Type.EPIC + "," + epic.getName() + ","
-                            + epic.getStatus() + "," + epic.getDescription());
+                    line = ("\n" + epic.getTaskId() + "," + Type.EPIC + "," + epic.getName() + "," + epic.getStatus() + "," + epic.getDescription());
                 } else if (list.get(i).getType() == Type.SUBTASK) {
                     subTask = getSubTaskList().get(i);
-                    line = ("\n" + subTask.getTaskId() + "," + Type.SUBTASK + "," + subTask.getName() + ","
-                            + subTask.getStatus() + "," + subTask.getDescription() + "," + subTask.getEpicId());
+                    line = ("\n" + subTask.getTaskId() + "," + Type.SUBTASK + "," + subTask.getName() + "," + subTask.getStatus() + "," + subTask.getDescription() + "," + subTask.getEpicId());
                 } else {
                     task = getTaskList().get(i);
-                    line = ("\n" + task.getTaskId() + "," + Type.TASK + "," + task.getName() + ","
-                            + task.getStatus() + "," + task.getDescription());
+                    line = ("\n" + task.getTaskId() + "," + Type.TASK + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription());
                 }
                 save.write(line + "\n");
             }
@@ -183,42 +178,3 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 }
-
-
-
-
-
-
-
-
-
-/*
-    private void save() throws ManagerSaveException {
-        int size = getTaskList().size() + getEpicTaskList().size() + getSubTaskList().size();
-        if (size <= 0) {
-            throw new ManagerSaveException("Задачи отсутствуют");
-        }
-        try (Writer save = new FileWriter(String.valueOf(saver))) {
-            save.write("id,type,name,status,description,epic");
-            for (int i = 1; i <= size; i++) {
-                Epic epic = findEpic(i);
-                SubTask subTask = findSub(i);
-                Task task = findTask(i);
-                String line;
-                if (epic != null) {
-                    line = String.format("%s,%s,%s,%s,%s" + epic.getTaskId() + Type.EPIC + epic.getName()
-                            + epic.getStatus() + epic.getDescription().trim());
-                } else if (subTask != null) {
-                    line = String.format("%s,%s,%s,%s,%s,%s" + subTask.getTaskId() + Type.SUBTASK + subTask.getName()
-                            + subTask.getStatus() + subTask.getDescription() + subTask.getEpicId()).trim();
-                } else {
-                    line = String.format("%s,%s,%s,%s,%s" + task.getTaskId() + Type.TASK + task.getName()
-                            + task.getStatus() + task.getDescription()).trim();
-                }
-                save.write(line + "\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Произошла ошибка ввода: " + e.getMessage());
-        }
-    }
- */
