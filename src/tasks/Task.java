@@ -7,11 +7,16 @@ public class Task {
     private String description;
     private Status status;
     private int taskId;
+    private final Type type = Type.TASK;
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public String getName() {

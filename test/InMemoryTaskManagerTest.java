@@ -1,5 +1,6 @@
 import manager.HistoryManager;
 import manager.InMemoryTaskManager;
+import manager.ManagerSaveException;
 import manager.Managers;
 import tasks.Epic;
 import tasks.Status;
@@ -8,6 +9,7 @@ import tasks.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +37,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void clearTask() {
+    void clearTask() throws IOException, ManagerSaveException {
         Task firstTask = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(firstTask);
         inMemoryTaskManager.clearTask();
@@ -44,7 +46,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void clearEpicTask() {
+    void clearEpicTask() throws IOException, ManagerSaveException {
         Epic firstEpic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(firstEpic);
         SubTask subTask = new SubTask("sub1", "1", Status.NEW, 1);
@@ -57,7 +59,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void clearSubTask() {
+    void clearSubTask() throws IOException, ManagerSaveException {
         Epic firstEpic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(firstEpic);
         SubTask subTask = new SubTask("sub1", "1", Status.IN_PROGRESS, firstEpic.getTaskId());
@@ -69,7 +71,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void findTask() {
+    void findTask() throws IOException, ManagerSaveException {
         Task task = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task);
         Task findTask = inMemoryTaskManager.findTask(task.getTaskId());
@@ -78,7 +80,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void findEpic() {
+    void findEpic() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(epic);
         Epic findEpic = inMemoryTaskManager.findEpic(epic.getTaskId());
@@ -87,7 +89,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void findSub() {
+    void findSub() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(epic);
         SubTask subTask = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());
@@ -98,7 +100,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addTask() {
+    void addTask() throws IOException, ManagerSaveException {
         Task task = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task);
         int taskId = inMemoryTaskManager.getTaskList().indexOf(task) + 1;
@@ -108,7 +110,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addEpic() {
+    void addEpic() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(epic);
         int epicId = inMemoryTaskManager.getEpicTaskList().indexOf(epic) + 1;
@@ -118,7 +120,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addSub() {
+    void addSub() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.NEW);
         inMemoryTaskManager.addEpic(epic);
         SubTask subTask = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());
@@ -130,7 +132,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void epicStatus() {
+    void epicStatus() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.IN_PROGRESS);
         inMemoryTaskManager.addEpic(epic);
         assertEquals(Status.NEW, epic.getStatus());
@@ -151,7 +153,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateTask() {
+    void updateTask() throws IOException, ManagerSaveException {
         Task task = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task);
         assertFalse(getDefaultHistory.getHistory().isEmpty());
@@ -161,7 +163,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateEpic() {
+    void updateEpic() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.IN_PROGRESS);
         inMemoryTaskManager.addEpic(epic);
         assertFalse(getDefaultHistory.getHistory().isEmpty());
@@ -171,7 +173,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateSub() {
+    void updateSub() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.IN_PROGRESS);
         inMemoryTaskManager.addEpic(epic);
         SubTask subTask1 = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());
@@ -183,7 +185,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeTask() {
+    void removeTask() throws IOException, ManagerSaveException {
         Task task = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task);
         inMemoryTaskManager.removeTask(task.getTaskId());
@@ -191,7 +193,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeEpic() {
+    void removeEpic() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.IN_PROGRESS);
         inMemoryTaskManager.addEpic(epic);
         SubTask subTask1 = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());
@@ -202,7 +204,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void removeSub() {
+    void removeSub() throws IOException, ManagerSaveException {
         Epic epic = new Epic("epic1", "1", Status.IN_PROGRESS);
         inMemoryTaskManager.addEpic(epic);
         SubTask subTask1 = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId());

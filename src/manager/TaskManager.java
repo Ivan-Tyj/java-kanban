@@ -4,6 +4,7 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public interface TaskManager {
@@ -14,11 +15,11 @@ public interface TaskManager {
 
     ArrayList<SubTask> getSubTaskList();
 
-    void clearTask();
+    void clearTask() throws IOException, ManagerSaveException;
 
-    void clearEpicTask();
+    void clearEpicTask() throws IOException, ManagerSaveException;
 
-    void clearSubTask();
+    void clearSubTask() throws IOException, ManagerSaveException;
 
     Task findTask(int findTaskId);
 
@@ -28,23 +29,23 @@ public interface TaskManager {
 
     boolean findEpicForSub(int epicId);
 
-    void addTask(Task task);
+    void addTask(Task task) throws IOException, ManagerSaveException;
 
-    void addEpic(Epic epic);
+    void addEpic(Epic epic) throws IOException, ManagerSaveException;
 
-    void addSub(SubTask sub);
+    void addSub(SubTask sub) throws IOException, ManagerSaveException;
 
-    void updateTask(Task newTask);
+    void updateTask(Task newTask) throws IOException, ManagerSaveException;
 
-    void updateEpic(Epic newEpic);
+    void updateEpic(Epic newEpic) throws IOException, ManagerSaveException;
 
-    void updateSub(SubTask newSub);
+    void updateSub(SubTask newSub) throws IOException, ManagerSaveException;
 
-    void removeTask(Integer key);
+    void removeTask(Integer key) throws IOException, ManagerSaveException;
 
-    void removeEpic(Integer key);
+    void removeEpic(Integer key) throws IOException, ManagerSaveException;
 
-    void removeSub(Integer key);
+    void removeSub(Integer key) throws IOException, ManagerSaveException;
 
     ArrayList<Task> subForEpic(int epicKey);
 

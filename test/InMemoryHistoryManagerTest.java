@@ -1,9 +1,11 @@
 import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
+import manager.ManagerSaveException;
 import tasks.Status;
 import tasks.Task;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -14,7 +16,7 @@ class InMemoryHistoryManagerTest {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
     @Test
-    void add() {
+    void add() throws IOException, ManagerSaveException {
         Task task1 = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task1);
         inMemoryHistoryManager.add(task1);
@@ -24,7 +26,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void remove() {
+    void remove() throws IOException, ManagerSaveException {
         Task task1 = new Task("task1", "task1 description", Status.NEW);
         inMemoryTaskManager.addTask(task1);
         inMemoryHistoryManager.add(task1);

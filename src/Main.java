@@ -1,3 +1,5 @@
+import manager.FileBackedTaskManager;
+import manager.ManagerSaveException;
 import manager.Managers;
 import manager.TaskManager;
 import tasks.Epic;
@@ -5,13 +7,16 @@ import tasks.Status;
 import tasks.SubTask;
 import tasks.Task;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ManagerSaveException, IOException {
         Scanner scanner = new Scanner(System.in);
         TaskManager inMemoryTaskManager = Managers.getDefault();
+        FileBackedTaskManager fileBackedTaskManager = Managers.loadFromFile(Path.of("saver.txt"));
 
         System.out.println("Приветствую!");
         while (true) {
@@ -87,7 +92,7 @@ public class Main {
         }
     }
 
-    public static void clearTasks(Scanner scanner, TaskManager taskManager) {
+    public static void clearTasks(Scanner scanner, TaskManager taskManager) throws IOException, ManagerSaveException {
         System.out.println("Удаление задач");
         printMenuManager();
         int enterTask = scanner.nextInt();
@@ -116,7 +121,8 @@ public class Main {
         }
     }
 
-    public static void createTask(Scanner scanner, TaskManager inMemoryTaskManager) {
+    public static void createTask(Scanner scanner, TaskManager inMemoryTaskManager) throws IOException,
+            ManagerSaveException {
         System.out.println("Создание задачи");
         System.out.println("Введите параметры: ");
         System.out.println("Наименование: ");
@@ -164,7 +170,8 @@ public class Main {
         }
     }
 
-    public static void updateOldTask(Scanner scanner, TaskManager taskManager) {
+    public static void updateOldTask(Scanner scanner, TaskManager taskManager) throws IOException,
+            ManagerSaveException {
         System.out.println("Обновление задачи");
         Task oldTask = null;
         System.out.println("Введите идентификатор задачи");
@@ -222,7 +229,7 @@ public class Main {
         }
     }
 
-    public static void removeTask(Scanner scanner, TaskManager taskManager) {
+    public static void removeTask(Scanner scanner, TaskManager taskManager) throws IOException, ManagerSaveException {
         System.out.println("Удаление задачи");
         printMenuManager();
         int removeCommand = scanner.nextInt();
