@@ -2,7 +2,9 @@ package manager;
 
 import tasks.*;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,21 +15,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public FileBackedTaskManager(Path saver) {
         this.saver = saver;
-    }
-
-    @Override
-    public ArrayList<Task> getTaskList() {
-        return super.getTaskList();
-    }
-
-    @Override
-    public ArrayList<Epic> getEpicTaskList() {
-        return super.getEpicTaskList();
-    }
-
-    @Override
-    public ArrayList<SubTask> getSubTaskList() {
-        return super.getSubTaskList();
     }
 
     @Override
@@ -43,28 +30,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void clearSubTask() throws ManagerSaveException {
+    public void clearSubTask() throws ManagerSaveException, IOException {
+        super.clearSubTask();
         save();
-    }
-
-    @Override
-    public Task findTask(int findTaskId) {
-        return super.findTask(findTaskId);
-    }
-
-    @Override
-    public Epic findEpic(int findTaskId) {
-        return super.findEpic(findTaskId);
-    }
-
-    @Override
-    public SubTask findSub(int findTaskId) {
-        return super.findSub(findTaskId);
-    }
-
-    @Override
-    public boolean findEpicForSub(int epicId) {
-        return super.findEpicForSub(epicId);
     }
 
     @Override
@@ -121,45 +89,30 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         save();
     }
 
-    @Override
-    public ArrayList<Task> subForEpic(int epicKey) {
-        return super.subForEpic(epicKey);
-    }
-
-    @Override
-    public ArrayList<Task> getHistory() {
-        return super.getHistory();
-    }
-
     private void save() throws ManagerSaveException {
+        String head = "id,type,name,status,description,epic";
         List<Task> list = new ArrayList<>();
         list.addAll(getTaskList());
         list.addAll(getEpicTaskList());
         list.addAll(getSubTaskList());
-        if (list.isEmpty()) {
-            throw new ManagerSaveException("Задачи отсутствуют");
-        }
         try (Writer save = new FileWriter(String.valueOf(saver))) {
-            save.write("id,type,name,status,description,epic");
+            save.write(head);
             for (int i = 0; i < list.size(); i++) {
-                Epic epic;
-                SubTask subTask;
-                Task task;
                 String line;
                 if (list.get(i).getType() == Type.EPIC) {
-                    epic = getEpicTaskList().get(i);
+                    Epic epic = getEpicTaskList().get(i);
                     line = ("\n" + epic.getTaskId() + "," + Type.EPIC + "," + epic.getName() + "," + epic.getStatus() + "," + epic.getDescription());
                 } else if (list.get(i).getType() == Type.SUBTASK) {
-                    subTask = getSubTaskList().get(i);
+                    SubTask subTask = getSubTaskList().get(i);
                     line = ("\n" + subTask.getTaskId() + "," + Type.SUBTASK + "," + subTask.getName() + "," + subTask.getStatus() + "," + subTask.getDescription() + "," + subTask.getEpicId());
                 } else {
-                    task = getTaskList().get(i);
+                    Task task = getTaskList().get(i);
                     line = ("\n" + task.getTaskId() + "," + Type.TASK + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription());
                 }
                 save.write(line + "\n");
             }
         } catch (IOException e) {
-            System.out.println("Произошла ошибка ввода: " + e.getMessage());
+            throw new ManagerSaveException("Произошла ошибка ввода: " + e.getMessage());
         }
     }
 
@@ -173,8 +126,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         } else if (values[1].equals("SUBTASK")) {
             int epicId = Integer.parseInt(values[5]);
             return new SubTask(name, description, status, epicId);
-        } else {
-            return new Task(name, description, status);
         }
+        return new Task(name, description, status);
     }
 }
