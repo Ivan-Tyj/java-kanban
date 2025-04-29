@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
 
     private final Path saver;
-    private final String HEAD = "id,type,name,status,description,epic";
+    private static final String HEAD = "id,type,name,status,description,epic";
 
     public FileBackedTaskManager(Path saver) {
         this.saver = saver;
