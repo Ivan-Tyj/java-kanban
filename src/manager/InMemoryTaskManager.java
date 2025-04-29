@@ -5,7 +5,6 @@ import tasks.Status;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,14 +37,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearTask() throws IOException, ManagerSaveException {
+    public void clearTask() throws ManagerSaveException {
         if (!taskList.isEmpty()) {
             taskList.clear();
         }
     }
 
     @Override
-    public void clearEpicTask() throws IOException, ManagerSaveException {
+    public void clearEpicTask() throws ManagerSaveException {
         if (!epicTaskList.isEmpty()) {
             epicTaskList.clear();
             if (!subTaskList.isEmpty()) {
@@ -55,7 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearSubTask() throws IOException, ManagerSaveException {
+    public void clearSubTask() throws ManagerSaveException {
         if (!subTaskList.isEmpty()) {
             subTaskList.clear();
             for (Integer key : epicTaskList.keySet()) {
@@ -91,7 +90,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addTask(Task task) throws IOException, ManagerSaveException {
+    public void addTask(Task task) throws ManagerSaveException {
         taskId++;
         task.setTaskId(taskId);
         taskList.put(taskId, task);
@@ -99,7 +98,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addEpic(Epic epic) throws IOException, ManagerSaveException {
+    public void addEpic(Epic epic) throws ManagerSaveException {
         taskId++;
         epic.setTaskId(taskId);
         epicTaskList.put(taskId, epic);
@@ -107,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSub(SubTask sub) throws IOException, ManagerSaveException {
+    public void addSub(SubTask sub) throws ManagerSaveException {
         taskId++;
         sub.setTaskId(taskId);
         subTaskList.put(taskId, sub);
@@ -142,21 +141,21 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task newTask) throws IOException, ManagerSaveException {
+    public void updateTask(Task newTask) throws ManagerSaveException {
         int key = newTask.getTaskId();
         taskList.put(key, newTask);
         getDefaultHistory.add(newTask);
     }
 
     @Override
-    public void updateEpic(Epic newEpic) throws IOException, ManagerSaveException {
+    public void updateEpic(Epic newEpic) throws ManagerSaveException {
         int key = newEpic.getTaskId();
         epicTaskList.put(key, newEpic);
         getDefaultHistory.add(newEpic);
     }
 
     @Override
-    public void updateSub(SubTask newSub) throws IOException, ManagerSaveException {
+    public void updateSub(SubTask newSub) throws ManagerSaveException {
         int key = newSub.getTaskId();
         subTaskList.put(key, newSub);
         epicStatus(newSub);
@@ -164,13 +163,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTask(Integer key) throws IOException, ManagerSaveException {
+    public void removeTask(Integer key) throws ManagerSaveException {
         getDefaultHistory.add(taskList.get(key));
         taskList.remove(key);
     }
 
     @Override
-    public void removeEpic(Integer key) throws IOException, ManagerSaveException {
+    public void removeEpic(Integer key) throws ManagerSaveException {
         getDefaultHistory.add(epicTaskList.get(key));
         epicTaskList.remove(key);
         for (Integer keySub : subTaskList.keySet()) {
@@ -181,7 +180,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeSub(Integer key) throws IOException, ManagerSaveException {
+    public void removeSub(Integer key) throws ManagerSaveException {
         getDefaultHistory.add(subTaskList.get(key));
         SubTask subTask = subTaskList.get(key);
         subTaskList.remove(key);
