@@ -9,16 +9,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest {
 
     @Test
     void addTask() throws IOException, ManagerSaveException {
-        Task task = new Task("task1", "task1 description", Status.NEW);
-        Epic epic = new Epic("e1", "e", Status.NEW);
+        Task task = new Task("task1", "task1 description", Status.NEW,
+                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
+                Duration.ofMinutes(10));
+        Epic epic = new Epic("e1", "e", Status.NEW,
+                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
+                Duration.ofMinutes(10));
         Path path = Files.createTempFile(Path.of("test"), ".txt", "src");
         assertTrue(Files.exists(path));
         FileBackedTaskManager backedTaskManager = new FileBackedTaskManager(path);

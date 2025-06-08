@@ -47,7 +47,7 @@ public interface TaskManager {
 
     void removeSub(Integer key) throws IOException, ManagerSaveException;
 
-    ArrayList<Task> subForEpic(int epicKey);
+    ArrayList<SubTask> subForEpic(int epicKey);
 
     ArrayList<Task> getHistory();
 

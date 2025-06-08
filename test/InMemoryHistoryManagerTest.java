@@ -5,7 +5,8 @@ import tasks.Status;
 import tasks.Task;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -16,8 +17,10 @@ class InMemoryHistoryManagerTest {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
     @Test
-    void add() throws IOException, ManagerSaveException {
-        Task task1 = new Task("task1", "task1 description", Status.NEW);
+    void add() throws ManagerSaveException {
+        Task task1 = new Task("task1", "task1 description", Status.NEW,
+                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
+                Duration.ofMinutes(10));
         inMemoryTaskManager.addTask(task1);
         inMemoryHistoryManager.add(task1);
         assertEquals("task1", inMemoryHistoryManager.getHistory().getFirst().getName());
@@ -26,8 +29,10 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void remove() throws IOException, ManagerSaveException {
-        Task task1 = new Task("task1", "task1 description", Status.NEW);
+    void remove() throws ManagerSaveException {
+        Task task1 = new Task("task1", "task1 description", Status.NEW,
+                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
+                Duration.ofMinutes(10));
         inMemoryTaskManager.addTask(task1);
         inMemoryHistoryManager.add(task1);
         ArrayList<Task> list = inMemoryHistoryManager.getTasks();

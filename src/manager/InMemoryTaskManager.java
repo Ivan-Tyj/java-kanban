@@ -4,9 +4,7 @@ import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
 import tasks.Task;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int taskId = 0;
@@ -14,6 +12,8 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epicTaskList = new HashMap<>();
     private final HashMap<Integer, SubTask> subTaskList = new HashMap<>();
     private final HistoryManager getDefaultHistory = Managers.getDefaultHistory();
+    private final TreeSet<Task> sortedTask = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+    private final TreeSet<SubTask> sortedSubTask = new TreeSet<>(Comparator.comparing(SubTask::getStartTime));
 
     @Override
     public ArrayList<Task> getTaskList() {
@@ -40,6 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearTask() throws ManagerSaveException {
         if (!taskList.isEmpty()) {
             taskList.clear();
+            sortedTask.clear();
         }
     }
 
@@ -49,6 +50,7 @@ public class InMemoryTaskManager implements TaskManager {
             epicTaskList.clear();
             if (!subTaskList.isEmpty()) {
                 subTaskList.clear();
+                sortedSubTask.clear();
             }
         }
     }
@@ -57,6 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearSubTask() throws ManagerSaveException {
         if (!subTaskList.isEmpty()) {
             subTaskList.clear();
+            sortedSubTask.clear();
             for (Integer key : epicTaskList.keySet()) {
                 epicTaskList.get(key).setStatus(Status.NEW);
             }
@@ -95,6 +98,9 @@ public class InMemoryTaskManager implements TaskManager {
         task.setTaskId(taskId);
         taskList.put(taskId, task);
         getDefaultHistory.add(task);
+        if (task.getStartTime() != null) {
+            sortedTask.add(task);
+        }
     }
 
     @Override
@@ -112,9 +118,12 @@ public class InMemoryTaskManager implements TaskManager {
         subTaskList.put(taskId, sub);
         epicStatus(sub);
         getDefaultHistory.add(sub);
+        if (sub.getStartTime() != null) {
+            sortedSubTask.add(sub);
+        }
     }
 
-    void epicStatus(SubTask subTask) {
+    private void epicStatus(SubTask subTask) {
         int statusNew = 0;
         int statusDone = 0;
         int statusInProgress = 0;
@@ -145,6 +154,9 @@ public class InMemoryTaskManager implements TaskManager {
         int key = newTask.getTaskId();
         taskList.put(key, newTask);
         getDefaultHistory.add(newTask);
+        if (newTask.getStartTime() != null) {
+            sortedTask.addAll(getTaskList());
+        }
     }
 
     @Override
@@ -160,12 +172,16 @@ public class InMemoryTaskManager implements TaskManager {
         subTaskList.put(key, newSub);
         epicStatus(newSub);
         getDefaultHistory.add(newSub);
+        if (newSub.getStartTime() != null) {
+            sortedSubTask.addAll(getSubTaskList());
+        }
     }
 
     @Override
     public void removeTask(Integer key) throws ManagerSaveException {
         getDefaultHistory.add(taskList.get(key));
         taskList.remove(key);
+        sortedTask.addAll(getTaskList());
     }
 
     @Override
@@ -185,22 +201,54 @@ public class InMemoryTaskManager implements TaskManager {
         SubTask subTask = subTaskList.get(key);
         subTaskList.remove(key);
         epicStatus(subTask);
+        sortedSubTask.addAll(getSubTaskList());
     }
 
     @Override
-    public ArrayList subForEpic(int epicKey) {
-        ArrayList<SubTask> subForEpic = new ArrayList<>();
-        for (Integer key : subTaskList.keySet()) {
-            SubTask subTask = subTaskList.get(key);
-            if (subTask.getEpicId() == epicKey) {
-                subForEpic.add(subTask);
-            }
-        }
-        return subForEpic;
+    public ArrayList<SubTask> subForEpic(int epicKey) {
+        List<SubTask> list = new ArrayList<>(getSubTaskList());
+        return (ArrayList<SubTask>) list.stream()
+                .filter(sub -> sub.getEpicId() == epicKey)
+                .toList();
     }
 
     @Override
     public ArrayList<Task> getHistory() {
         return (ArrayList<Task>) getDefaultHistory.getHistory();
+    }
+
+    public ArrayList<Task> getPrioritizedTasks() {
+        return new ArrayList<>(sortedTask);
+    }
+
+    public ArrayList<SubTask> getPrioritizedSubTasks() {
+        return new ArrayList<>(sortedSubTask);
+    }
+
+    public boolean isIntersectionTask() {
+        boolean isIntersection = false;
+        ArrayList<Task> list = getPrioritizedTasks();
+        for (int i = 0; i < list.size(); i++) {
+            Task task = list.get(i);
+            Task nextTask = list.get((i + 1));
+            if (task.getEndTime().isAfter(nextTask.getStartTime())) {
+                isIntersection = true;
+                break;
+            }
+        }
+        return isIntersection;
+    }
+
+    public boolean isIntersectionSubTask() {
+        boolean isIntersection = false;
+        List<SubTask> list = getPrioritizedSubTasks();
+        for (int i = 0; i < list.size(); i++) {
+            SubTask task = list.get(i);
+            SubTask nextTask = list.get((i + 1));
+            if (task.getEndTime().isAfter(nextTask.getStartTime())) {
+                isIntersection = true;
+            }
+        }
+        return isIntersection;
     }
 }

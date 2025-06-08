@@ -9,6 +9,8 @@ import tasks.Task;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
@@ -131,6 +133,10 @@ public class Main {
         String description = scanner.next();
         System.out.println("Статус: 1 - новая, 2 - выполняется, 3 - выполнена");
         Status status = null;
+        System.out.println("Дата и время в формате: YYYY.mm.dd HH:MM");
+        LocalDateTime startTime = LocalDateTime.parse(scanner.next());
+        System.out.println("Продолжительность в минутах");
+        Duration duration = Duration.parse((scanner.next()));
         int statusCommand = scanner.nextInt();
         if (statusCommand == 1) {
             status = Status.NEW;
@@ -145,20 +151,20 @@ public class Main {
         int commandCreate = scanner.nextInt();
         switch (commandCreate) {
             case 1:
-                inMemoryTaskManager.addTask(new Task(name, description, status));
+                inMemoryTaskManager.addTask(new Task(name, description, status, startTime, duration));
                 System.out.println("Задача: " + name + " - добавлена, с идентификатором: "
                         + inMemoryTaskManager);
                 break;
             case 2:
                 status = Status.NEW;
-                inMemoryTaskManager.addEpic(new Epic(name, description, status));
+                inMemoryTaskManager.addEpic(new Epic(name, description, status, startTime, duration));
                 System.out.println("Эпик: " + name + " - добавлен");
                 break;
             case 3:
                 System.out.println("Введите идентификатор эпика, в рамках которого выполняется подзадача");
                 int epicId = scanner.nextInt();
                 if (inMemoryTaskManager.findEpicForSub(epicId)) {
-                    inMemoryTaskManager.addSub(new SubTask(name, description, status, epicId));
+                    inMemoryTaskManager.addSub(new SubTask(name, description, status, epicId, startTime, duration));
                     System.out.println("Подзадача: " + name + " - добавлена");
                 } else {
                     System.out.println("Идентификатор эпика введён неверно");
