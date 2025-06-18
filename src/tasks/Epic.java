@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Epic extends Task {
     private final Type type = Type.EPIC;
-    private final List<SubTask> subForEpicList = new ArrayList<>();;
+    private final List<SubTask> subForEpicList = new ArrayList<>();
 
     public Epic(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         super(name, description, status, startTime, duration);
