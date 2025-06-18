@@ -22,7 +22,7 @@ public abstract class Managers {
         return IN_MEMORY_HISTORY_MANAGER;
     }
 
-    public static FileBackedTaskManager loadFromFile(Path path) throws ManagerSaveException {
+    public static FileBackedTaskManager loadFromFile(Path path) {
         try (Reader reader = new FileReader(String.valueOf(path))) {
             BufferedReader br = new BufferedReader(reader);
             while (br.ready()) {
@@ -30,20 +30,18 @@ public abstract class Managers {
                 if ((int) line.charAt(0) > 0) {
                     if (line.contains("TASK")) {
                         Task task = FileBackedTaskManager.fromString(line);
-                        IN_MEMORY_TASK_MANAGER.addTask(task);
+                        getDefault().addTask(task);
                     } else if (line.contains("EPIC")) {
                         Epic epic = (Epic) FileBackedTaskManager.fromString(line);
-                        IN_MEMORY_TASK_MANAGER.addEpic(epic);
+                        getDefault().addEpic(epic);
                     } else if (line.contains("SUBTASK")) {
                         SubTask subTask = (SubTask) FileBackedTaskManager.fromString(line);
-                        IN_MEMORY_TASK_MANAGER.addSub(subTask);
+                        getDefault().addSub(subTask);
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            System.out.println("Произошла ошибка ввода: " + e.getMessage());
+            throw new RuntimeException(e);
         }
         return FILE_BACKED_TASK_MANAGER;
     }

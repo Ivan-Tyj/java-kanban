@@ -2,9 +2,7 @@ package manager;
 
 import tasks.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -93,9 +91,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private void save() throws ManagerSaveException {
         try (Writer save = new FileWriter(String.valueOf(saver))) {
             save.write(HEAD);
-            taskToCSV(save);
             epicToCSV(save);
             subToCSV(save);
+            taskToCSV(save);
         } catch (IOException e) {
             throw new ManagerSaveException("Произошла ошибка ввода файла: " + e.getMessage());
         }
@@ -104,9 +102,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private void taskToCSV(Writer save) throws ManagerSaveException {
         if (!getTaskList().isEmpty()) {
             for (Task task : getTaskList()) {
-                String line = ("\n" + task.getTaskId() + "," + Type.TASK + "," + task.getName() + "," + task.getStatus()
-                        + "," + task.getDescription()) + "," + task.getStartTime() + "," + task.getEndTime()
-                        + "," + task.getDuration().toMinutes();
+                String line = task.toString();
                 try {
                     save.write(line);
                 } catch (IOException e) {
@@ -119,9 +115,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private void epicToCSV(Writer save) throws ManagerSaveException {
         if (!getEpicTaskList().isEmpty()) {
             for (Epic epic : getEpicTaskList()) {
-                String line = ("\n" + epic.getTaskId() + "," + Type.EPIC + "," + epic.getName() + "," + epic.getStatus()
-                        + "," + epic.getDescription() + "," + epic.getStartTime() + "," + epic.getEndTime()
-                        + "," + epic.getDuration().toMinutes());
+                String line = epic.toString();
                 try {
                     save.write(line);
                 } catch (IOException e) {
@@ -134,10 +128,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private void subToCSV(Writer save) throws ManagerSaveException {
         if (!getSubTaskList().isEmpty()) {
             for (SubTask subTask : getSubTaskList()) {
-                String line = ("\n" + subTask.getTaskId() + "," + Type.SUBTASK + "," + subTask.getName() + ","
-                        + subTask.getStatus() + "," + subTask.getDescription()) + subTask.getEpicId()
-                        + "," + subTask.getStartTime() + "," + subTask.getEndTime()
-                        + "," + subTask.getDuration().toMinutes();
+                String line = subTask.toString();
                 try {
                     save.write(line);
                 } catch (IOException e) {

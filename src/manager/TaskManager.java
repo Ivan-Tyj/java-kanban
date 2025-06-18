@@ -6,8 +6,11 @@ import tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
+
+    int getTaskId();
 
     ArrayList<Task> getTaskList();
 
@@ -15,7 +18,7 @@ public interface TaskManager {
 
     ArrayList<SubTask> getSubTaskList();
 
-    void clearTask() throws IOException, ManagerSaveException;
+    void clearTask();
 
     void clearEpicTask() throws IOException, ManagerSaveException;
 
@@ -49,6 +52,11 @@ public interface TaskManager {
 
     ArrayList<SubTask> subForEpic(int epicKey);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
+    ArrayList<Task> getPrioritizedTasks();
+
+    ArrayList<SubTask> getPrioritizedSubTasks();
+
+    <T extends Task> boolean isIntersectionTask(ArrayList<T> list);
 }

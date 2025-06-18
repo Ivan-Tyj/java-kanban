@@ -21,4 +21,12 @@ public class SubTask extends Task {
     public Type getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+       return  "\n" + getTaskId() + "," + getType() + "," + getName() + ","
+                + getStatus() + "," + getDescription() + getEpicId()
+                + "," + getStartTime() + "," + getEndTime()
+                + "," + getDuration().toMinutes();
+    }
 }

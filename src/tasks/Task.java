@@ -1,5 +1,7 @@
 package tasks;
 
+import manager.FileBackedTaskManager;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,7 +14,6 @@ public class Task {
     private final Type type = Type.TASK;
     private final Duration duration;
     private final LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
@@ -81,5 +82,12 @@ public class Task {
     @Override
     public int hashCode() {
         return taskId;
+    }
+
+    @Override
+    public String toString() {
+        return "\n" + getTaskId() + "," + getType() + "," + getName() + "," + getStatus()
+                + "," + getDescription() + "," + getStartTime() + "," + getEndTime()
+                + "," + getDuration().toMinutes();
     }
 }
