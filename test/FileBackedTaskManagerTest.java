@@ -56,7 +56,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
         Epic epic = new Epic("epic", "epic description", Status.NEW,
                 LocalDateTime.of(2025, 1, 1, 1, 1),
                 Duration.ofMinutes(10));
-        SubTask subTask = new SubTask("sub", "sub description", Status.NEW, epic.getTaskId(),
+        SubTask subTask = new SubTask("sub", "sub description", Status.NEW, 1,
                 LocalDateTime.of(2025, 1, 1, 1, 1),
                 Duration.ofMinutes(10));
         Path path = Files.createTempFile(Path.of("test"), ".txt", "src");
