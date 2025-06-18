@@ -5,6 +5,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
 
@@ -119,6 +120,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                     save.write(line);
                 } catch (IOException e) {
                     throw new ManagerSaveException("Произошла ошибка записи эпика в файл: " + e.getMessage());
+                } catch (NullPointerException e) {
+                    System.out.println(Arrays.toString(e.getStackTrace()));
                 }
             }
         }

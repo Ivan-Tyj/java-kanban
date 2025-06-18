@@ -124,7 +124,8 @@ public class InMemoryTaskManager implements TaskManager {
         taskId++;
         sub.setTaskId(taskId);
         subTaskList.put(taskId, sub);
-        epicTaskList.get(sub.getEpicId()).addSubForEpicList(sub);
+        Epic epic = epicTaskList.get(sub.getEpicId());
+        epic.addSubForEpicList(sub);
         epicStatus(sub);
         getDefaultHistory.add(sub);
         if (sub.getStartTime() != null) {

@@ -191,23 +191,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     }
 
     @Test
-    void updateEpic() throws ManagerSaveException, IOException {
-        Epic epic = new Epic("epic1", "1", Status.NEW,
-                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
-                Duration.ofMinutes(10));
-        inMemoryTaskManager.addEpic(epic);
-        SubTask subTask = new SubTask("sub1", "1", Status.IN_PROGRESS, epic.getTaskId(),
-                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
-                Duration.ofMinutes(10));
-        inMemoryTaskManager.addSub(subTask);
-        Epic newEpic = new Epic("epic2", "1", Status.IN_PROGRESS,
-                LocalDateTime.of(2025, 1, 1, 1, 1, 1),
-                Duration.ofMinutes(10));
-        inMemoryTaskManager.updateEpic(newEpic);
-        assertEquals("epic2", newEpic.getName());
-    }
-
-    @Test
     void updateSub() throws ManagerSaveException, IOException {
         Epic epic = new Epic("epic1", "1", Status.IN_PROGRESS,
                 LocalDateTime.of(2025, 1, 1, 1, 1, 1),

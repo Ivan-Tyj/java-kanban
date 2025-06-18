@@ -36,20 +36,28 @@ public class Epic extends Task {
 
     @Override
     public LocalDateTime getStartTime() {
+        if (!subForEpicList.isEmpty()) {
             List<SubTask> list = getSubForEpicList();
             return list.stream()
                     .min((Comparator.comparing(SubTask::getStartTime)))
                     .map(SubTask::getStartTime)
-                    .orElseThrow(NullPointerException::new);
+                    .orElseThrow();
+        } else {
+            return super.getStartTime();
+        }
     }
 
     @Override
     public LocalDateTime getEndTime() {
+        if (!subForEpicList.isEmpty()) {
             List<SubTask> list = getSubForEpicList();
             return list.stream()
                     .min((Comparator.comparing(SubTask::getEndTime)))
                     .map(SubTask::getEndTime)
-                    .orElseThrow(NullPointerException::new);
+                    .orElseThrow();
+        } else {
+            return super.getEndTime();
+        }
     }
 
     @Override

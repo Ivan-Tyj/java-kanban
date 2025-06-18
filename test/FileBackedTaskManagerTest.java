@@ -22,7 +22,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
 
     @Override
     @Test
-    public void addTask() throws IOException, ManagerSaveException {
+    public void addTask() throws ManagerSaveException, IOException {
         Task task = new Task("task1", "task1 description", Status.NEW,
                 LocalDateTime.of(2025, 1, 1, 1, 1),
                 Duration.ofMinutes(10));
@@ -56,7 +56,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
         Epic epic = new Epic("epic", "epic description", Status.NEW,
                 LocalDateTime.of(2025, 1, 1, 1, 1),
                 Duration.ofMinutes(10));
-        SubTask subTask = new SubTask("epic", "epic description", Status.NEW, epic.getTaskId(),
+        SubTask subTask = new SubTask("sub", "sub description", Status.NEW, epic.getTaskId(),
                 LocalDateTime.of(2025, 1, 1, 1, 1),
                 Duration.ofMinutes(10));
         Path path = Files.createTempFile(Path.of("test"), ".txt", "src");
