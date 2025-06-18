@@ -1,6 +1,4 @@
-package Tests;
-
-import Manager.Managers;
+import manager.Managers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,6 +8,7 @@ class ManagersTest {
     void getDefault() {
         assertNotNull(Managers.getDefault());
     }
+
     @Test
     void getDefaultHistory() {
         assertNotNull(Managers.getDefaultHistory());

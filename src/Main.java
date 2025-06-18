@@ -1,18 +1,24 @@
-import Manager.HistoryManager;
-import Manager.Managers;
-import Manager.TaskManager;
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import manager.FileBackedTaskManager;
+import manager.ManagerSaveException;
+import manager.Managers;
+import manager.TaskManager;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ManagerSaveException, IOException {
         Scanner scanner = new Scanner(System.in);
         TaskManager inMemoryTaskManager = Managers.getDefault();
+        FileBackedTaskManager fileBackedTaskManager = Managers.loadFromFile(Path.of("saver.txt"));
 
         System.out.println("Приветствую!");
         while (true) {
@@ -88,7 +94,7 @@ public class Main {
         }
     }
 
-    public static void clearTasks(Scanner scanner, TaskManager taskManager) {
+    public static void clearTasks(Scanner scanner, TaskManager taskManager) throws IOException, ManagerSaveException {
         System.out.println("Удаление задач");
         printMenuManager();
         int enterTask = scanner.nextInt();
@@ -117,7 +123,8 @@ public class Main {
         }
     }
 
-    public static void createTask(Scanner scanner, TaskManager inMemoryTaskManager) {
+    public static void createTask(Scanner scanner, TaskManager inMemoryTaskManager) throws IOException,
+            ManagerSaveException {
         System.out.println("Создание задачи");
         System.out.println("Введите параметры: ");
         System.out.println("Наименование: ");
@@ -126,6 +133,10 @@ public class Main {
         String description = scanner.next();
         System.out.println("Статус: 1 - новая, 2 - выполняется, 3 - выполнена");
         Status status = null;
+        System.out.println("Дата и время в формате: YYYY.mm.dd HH:MM");
+        LocalDateTime startTime = LocalDateTime.parse(scanner.next());
+        System.out.println("Продолжительность в минутах");
+        Duration duration = Duration.parse((scanner.next()));
         int statusCommand = scanner.nextInt();
         if (statusCommand == 1) {
             status = Status.NEW;
@@ -140,20 +151,20 @@ public class Main {
         int commandCreate = scanner.nextInt();
         switch (commandCreate) {
             case 1:
-                inMemoryTaskManager.addTask(new Task(name, description, status));
+                inMemoryTaskManager.addTask(new Task(name, description, status, startTime, duration));
                 System.out.println("Задача: " + name + " - добавлена, с идентификатором: "
                         + inMemoryTaskManager);
                 break;
             case 2:
                 status = Status.NEW;
-                inMemoryTaskManager.addEpic(new Epic(name, description, status));
+                inMemoryTaskManager.addEpic(new Epic(name, description, status, startTime, duration));
                 System.out.println("Эпик: " + name + " - добавлен");
                 break;
             case 3:
                 System.out.println("Введите идентификатор эпика, в рамках которого выполняется подзадача");
                 int epicId = scanner.nextInt();
                 if (inMemoryTaskManager.findEpicForSub(epicId)) {
-                    inMemoryTaskManager.addSub(new SubTask(name, description, status, epicId));
+                    inMemoryTaskManager.addSub(new SubTask(name, description, status, epicId, startTime, duration));
                     System.out.println("Подзадача: " + name + " - добавлена");
                 } else {
                     System.out.println("Идентификатор эпика введён неверно");
@@ -165,7 +176,8 @@ public class Main {
         }
     }
 
-    public static void updateOldTask(Scanner scanner, TaskManager taskManager) {
+    public static void updateOldTask(Scanner scanner, TaskManager taskManager) throws IOException,
+            ManagerSaveException {
         System.out.println("Обновление задачи");
         Task oldTask = null;
         System.out.println("Введите идентификатор задачи");
@@ -223,7 +235,7 @@ public class Main {
         }
     }
 
-    public static void removeTask(Scanner scanner, TaskManager taskManager) {
+    public static void removeTask(Scanner scanner, TaskManager taskManager) throws IOException, ManagerSaveException {
         System.out.println("Удаление задачи");
         printMenuManager();
         int removeCommand = scanner.nextInt();
@@ -237,6 +249,7 @@ public class Main {
             taskManager.removeSub(removeTaskId);
         }
     }
+
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTaskList()) {
