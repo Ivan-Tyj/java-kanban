@@ -16,7 +16,6 @@ import java.util.List;
 
 public class EpicHttpHandler extends BaseHttpHandler implements HttpHandler {
 
-
     Gson gson;
 
     public EpicHttpHandler(Gson gson) {

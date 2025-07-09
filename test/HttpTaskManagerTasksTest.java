@@ -7,22 +7,19 @@ import com.sun.net.httpserver.HttpServer;
 import http.handlers.subs.TasksHttpHandler;
 import manager.InMemoryTaskManager;
 import manager.TaskManager;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import tasks.Status;
 import tasks.Task;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -32,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class HttpTaskManagerTasksTest {
 
     TaskManager manager = new InMemoryTaskManager();
-    Gson  gson = new Gson();
+    Gson gson = new Gson();
 
     @BeforeEach
     public void setUp() throws IOException {
