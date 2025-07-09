@@ -42,6 +42,7 @@ class HttpTaskManagerTasksTest {
     public void testAddTask() throws IOException, InterruptedException {
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
         httpServer.createContext("/tasks", new TasksHttpHandler(gson));
+        httpServer.start();
         Task task = new Task("task1", "task1 description", Status.NEW,
                 LocalDateTime.now(),
                 Duration.ofMinutes(10));
@@ -64,6 +65,7 @@ class HttpTaskManagerTasksTest {
         assertNotNull(tasksFromManager, "Задачи не возвращаются");
         assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
         assertEquals("Test 2", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
+        httpServer.stop(10);
     }
 }
 
