@@ -21,6 +21,15 @@ public class Task {
         this.startTime = startTime;
     }
 
+    public Task(int taskId, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        this.taskId = taskId;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
     public Type getType() {
         return type;
     }

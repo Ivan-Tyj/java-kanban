@@ -77,7 +77,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task findTask(int findTaskId) {
         Task task = taskList.getOrDefault(findTaskId, null);
-        getDefaultHistory.add(task);
+        if (task != null) getDefaultHistory.add(task);
         return task;
     }
 

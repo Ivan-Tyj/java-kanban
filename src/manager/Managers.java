@@ -4,22 +4,24 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Path;
 
 public abstract class Managers {
-    private static final TaskManager IN_MEMORY_TASK_MANAGER = new InMemoryTaskManager();
-    private static final InMemoryHistoryManager IN_MEMORY_HISTORY_MANAGER = new InMemoryHistoryManager();
+
     private static final FileBackedTaskManager FILE_BACKED_TASK_MANAGER =
             new FileBackedTaskManager(Path.of("saver.txt"));
 
 
     public static TaskManager getDefault() {
-        return IN_MEMORY_TASK_MANAGER;
+        return new InMemoryTaskManager();
     }
 
     public static HistoryManager getDefaultHistory() {
-        return IN_MEMORY_HISTORY_MANAGER;
+        return new InMemoryHistoryManager();
     }
 
     public static FileBackedTaskManager loadFromFile(Path path) {

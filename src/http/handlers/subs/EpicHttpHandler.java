@@ -1,13 +1,10 @@
 package http.handlers.subs;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import http.handlers.BaseHttpHandler;
-import http.handlers.adapters.DurationAdapter;
-import http.handlers.adapters.LocalDateTimeAdapter;
 import manager.Managers;
+import manager.TaskManager;
 import tasks.Epic;
 import tasks.SubTask;
 
@@ -15,17 +12,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 public class EpicHttpHandler extends BaseHttpHandler implements HttpHandler {
 
-    Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Duration.class, new DurationAdapter())
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .create();
+    public EpicHttpHandler(TaskManager manager) {
+        super(manager);
+    }
 
     @Override
     public void handle(HttpExchange exchange) {
