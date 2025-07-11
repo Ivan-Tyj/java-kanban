@@ -64,5 +64,6 @@ class HttpTaskManagerTasksTest {
         assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
         assertEquals("task1", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
         client.close();
+
     }
 }
