@@ -1,16 +1,27 @@
 package http.handlers.subs;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import http.handlers.BaseHttpHandler;
+import http.handlers.adapters.DurationAdapter;
+import http.handlers.adapters.LocalDateTimeAdapter;
 import manager.Managers;
 import tasks.Task;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class HistoryHttpHandler extends BaseHttpHandler implements HttpHandler {
+
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -31,7 +42,7 @@ public class HistoryHttpHandler extends BaseHttpHandler implements HttpHandler {
 
     public void getHistoryHandle(HttpExchange exchange) throws IOException {
         List<Task> list = Managers.getDefaultHistory().getHistory();
-        String text = list.toString();
+        String text = gson.toJson(list);
         sendText(exchange, text, 200);
     }
 

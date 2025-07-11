@@ -1,9 +1,12 @@
 package http.handlers.subs;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import http.handlers.BaseHttpHandler;
+import http.handlers.adapters.DurationAdapter;
+import http.handlers.adapters.LocalDateTimeAdapter;
 import manager.Managers;
 import tasks.SubTask;
 
@@ -11,16 +14,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SubHttpHandler extends BaseHttpHandler implements HttpHandler {
 
-    Gson gson;
-
-    public SubHttpHandler(Gson gson) {
-        super();
-        this.gson = gson;
-    }
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -56,14 +59,15 @@ public class SubHttpHandler extends BaseHttpHandler implements HttpHandler {
 
     public void getSubsHandle(HttpExchange exchange) throws IOException {
         List<SubTask> list = Managers.getDefault().getSubTaskList();
-        String text = list.toString();
+        String text = gson.toJson(list);
         sendText(exchange, text, 200);
     }
 
     public void getSubByIdHandle(HttpExchange exchange, String s) throws IOException {
         try {
             SubTask subTask = Managers.getDefault().findSub(Integer.parseInt(s));
-            sendText(exchange, subTask.toString(), 200);
+            String text = gson.toJson(subTask);
+            sendText(exchange, text, 200);
         } catch (NullPointerException e) {
             sendNotFound(exchange);
         }
@@ -71,12 +75,12 @@ public class SubHttpHandler extends BaseHttpHandler implements HttpHandler {
 
     public void createSubHandle(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        String body = gson.toJson(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
         SubTask subTask = gson.fromJson(body, SubTask.class);
         boolean isFindSub = Managers.getDefault().findSub(subTask.getTaskId()) == null;
         if (isFindSub) {
             Managers.getDefault().addSub(subTask);
-            sendText(exchange, subTask.toString(), 201);
+            sendText(exchange, body, 201);
         } else {
             sendHasInteractions(exchange);
         }
@@ -84,10 +88,10 @@ public class SubHttpHandler extends BaseHttpHandler implements HttpHandler {
 
     public void updateSubHandle(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        String body = gson.toJson(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
         SubTask subTask = gson.fromJson(body, SubTask.class);
         Managers.getDefault().updateSub(subTask);
-        sendText(exchange, subTask.toString(), 201);
+        sendText(exchange, body, 201);
     }
 
     public void deleteSubHandle(HttpExchange exchange, String s) throws IOException {
