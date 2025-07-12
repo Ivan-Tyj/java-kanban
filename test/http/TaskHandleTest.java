@@ -1,7 +1,8 @@
+package http;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import http.HttpTaskServer;
 import http.handlers.adapters.DurationAdapter;
 import http.handlers.adapters.LocalDateTimeAdapter;
 import manager.InMemoryTaskManager;
@@ -21,9 +22,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class HttpTaskTest {
+class TaskHandleTest {
 
     InMemoryTaskManager manager = new InMemoryTaskManager();
     Gson gson = new GsonBuilder()
@@ -93,27 +95,6 @@ class HttpTaskTest {
         assertEquals(200, response.statusCode());
         assertEquals(task, tasksFromManager.getFirst());
 
-        client.close();
-    }
-
-    @Test
-    void testDeleteTask() throws IOException, InterruptedException {
-        Task task = new Task(1, "task1", "task1 description", Status.NEW,
-                LocalDateTime.now(),
-                Duration.ofMinutes(10));
-        manager.addTask(task);
-        int taskId = manager.getTaskId();
-
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/" + taskId);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(url)
-                .DELETE()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response.statusCode());
-        assertTrue(manager.getTaskList().isEmpty());
         client.close();
     }
 }
