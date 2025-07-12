@@ -2,7 +2,9 @@ package tasks;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Epic extends Task {
     private final Type type = Type.EPIC;
@@ -11,6 +13,15 @@ public class Epic extends Task {
     public Epic(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         super(name, description, status, startTime, duration);
         setStatus(Status.NEW);
+    }
+
+    public Epic(int epicId, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        super(epicId, name, description, status, startTime, duration);
+        setStatus(Status.NEW);
+    }
+
+    public Epic(String name, String description) {
+        super(name, description);
     }
 
     public List<SubTask> getSubForEpicList() {

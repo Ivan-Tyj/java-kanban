@@ -84,14 +84,14 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic findEpic(int findTaskId) {
         Epic epic = epicTaskList.getOrDefault(findTaskId, null);
-        getDefaultHistory.add(epic);
+        if (epic != null) getDefaultHistory.add(epic);
         return epic;
     }
 
     @Override
     public SubTask findSub(int findTaskId) {
         SubTask subTask = subTaskList.getOrDefault(findTaskId, null);
-        getDefaultHistory.add(subTask);
+        if (subTask != null) getDefaultHistory.add(subTask);
         return subTask;
     }
 

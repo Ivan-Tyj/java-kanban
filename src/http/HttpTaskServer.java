@@ -19,7 +19,7 @@ public class HttpTaskServer {
 
     public void start(InMemoryTaskManager manager) {
         try {
-            HttpServer httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
+            httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
             httpServer.createContext(tasksPath, new TasksHttpHandler(manager));
             httpServer.createContext(subTasksPath, new SubHttpHandler(manager));
             httpServer.createContext(epicsPath, new EpicHttpHandler(manager));
@@ -32,6 +32,6 @@ public class HttpTaskServer {
     }
 
     public void stop() {
-        httpServer.stop(1);
+        httpServer.stop(0);
     }
 }

@@ -27,14 +27,14 @@ public class TasksHttpHandler extends BaseHttpHandler implements HttpHandler {
             String[] uriStrSplits = path.split("/");
             switch (exchange.getRequestMethod()) {
                 case "GET":
-                    if (uriStrSplits.length > 2) {
+                    if (uriStrSplits.length == 3) {
                         getTaskByIdHandle(exchange, uriStrSplits[2]);
                         break;
                     }
                     getTasksHandle(exchange);
                     break;
                 case "POST":
-                    if (uriStrSplits.length > 2) {
+                    if (uriStrSplits.length == 3) {
                         updateTasksHandle(exchange);
                         break;
                     }
@@ -85,7 +85,7 @@ public class TasksHttpHandler extends BaseHttpHandler implements HttpHandler {
 
     public void updateTasksHandle(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
-        String body = gson.toJson(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
+        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         Task task = gson.fromJson(body, Task.class);
         manager.updateTask(task);
         sendText(exchange, body, 201);
@@ -94,8 +94,7 @@ public class TasksHttpHandler extends BaseHttpHandler implements HttpHandler {
     public void deleteTasksHandle(HttpExchange exchange, String s) throws IOException {
         try {
             Task task = manager.findTask(Integer.parseInt(s));
-            boolean isFindTask = manager.findTask(task.getTaskId()) == null;
-            if (isFindTask) {
+            if (manager.findTask(task.getTaskId()) == null) {
                 manager.removeTask(Integer.parseInt(s));
                 sendText(exchange, "Задача с Id: " + s + " удалена.", 200);
             }

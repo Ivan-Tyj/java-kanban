@@ -10,8 +10,8 @@ public class Task {
     private Status status;
     private int taskId;
     private final Type type = Type.TASK;
-    private final Duration duration;
-    private final LocalDateTime startTime;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
@@ -28,6 +28,11 @@ public class Task {
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
+    }
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public Type getType() {
