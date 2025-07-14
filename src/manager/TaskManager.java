@@ -20,9 +20,9 @@ public interface TaskManager {
 
     void clearTask();
 
-    void clearEpicTask() throws IOException, ManagerSaveException;
+    void clearEpicTask() throws IOException;
 
-    void clearSubTask() throws IOException, ManagerSaveException;
+    void clearSubTask() throws IOException;
 
     Task findTask(int findTaskId);
 
@@ -32,23 +32,23 @@ public interface TaskManager {
 
     boolean findEpicForSub(int epicId);
 
-    void addTask(Task task) throws IOException, ManagerSaveException;
+    void addTask(Task task) throws IOException;
 
-    void addEpic(Epic epic) throws IOException, ManagerSaveException;
+    void addEpic(Epic epic) throws IOException;
 
-    void addSub(SubTask sub) throws IOException, ManagerSaveException;
+    void addSub(SubTask sub) throws IOException;
 
-    void updateTask(Task newTask) throws IOException, ManagerSaveException;
+    void updateTask(Task newTask) throws IOException;
 
-    void updateEpic(Epic newEpic) throws IOException, ManagerSaveException;
+    void updateEpic(Epic newEpic) throws IOException;
 
-    void updateSub(SubTask newSub) throws IOException, ManagerSaveException;
+    void updateSub(SubTask newSub) throws IOException;
 
-    void removeTask(Integer key) throws IOException, ManagerSaveException;
+    void removeTask(Integer key) throws IOException;
 
-    void removeEpic(Integer key) throws IOException, ManagerSaveException;
+    void removeEpic(Integer key) throws IOException;
 
-    void removeSub(Integer key) throws IOException, ManagerSaveException;
+    void removeSub(Integer key) throws IOException;
 
     ArrayList<SubTask> subForEpic(int epicKey);
 

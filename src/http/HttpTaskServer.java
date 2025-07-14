@@ -10,21 +10,21 @@ import java.net.InetSocketAddress;
 public class HttpTaskServer {
 
     private static final int PORT = 8080;
-    private static final String tasksPath = "/tasks";
-    private static final String subTasksPath = "/subtasks";
-    private static final String epicsPath = "/epics";
-    private static final String historyPath = "/history";
-    private static final String prioritizedPath = "/prioritized";
-    HttpServer httpServer;
+    private static final String TASKS_PATH = "/tasks";
+    private static final String SUB_TASKS_PATH = "/subtasks";
+    private static final String EPICS_PATH = "/epics";
+    private static final String HISTORY_PATH = "/history";
+    private static final String PRIORITIZED_PATH = "/prioritized";
+    private HttpServer httpServer;
 
     public void start(InMemoryTaskManager manager) {
         try {
             httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
-            httpServer.createContext(tasksPath, new TasksHttpHandler(manager));
-            httpServer.createContext(subTasksPath, new SubHttpHandler(manager));
-            httpServer.createContext(epicsPath, new EpicHttpHandler(manager));
-            httpServer.createContext(historyPath, new HistoryHttpHandler(manager));
-            httpServer.createContext(prioritizedPath, new PrioritizedHttpHandler(manager));
+            httpServer.createContext(TASKS_PATH, new TasksHttpHandler(manager));
+            httpServer.createContext(SUB_TASKS_PATH, new SubHttpHandler(manager));
+            httpServer.createContext(EPICS_PATH, new EpicHttpHandler(manager));
+            httpServer.createContext(HISTORY_PATH, new HistoryHttpHandler(manager));
+            httpServer.createContext(PRIORITIZED_PATH, new PrioritizedHttpHandler(manager));
             httpServer.start();
         } catch (IOException e) {
             System.out.println(e.getMessage());

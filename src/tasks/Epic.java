@@ -53,9 +53,8 @@ public class Epic extends Task {
                     .min((Comparator.comparing(SubTask::getStartTime)))
                     .map(SubTask::getStartTime)
                     .orElseThrow();
-        } else {
-            return super.getStartTime();
         }
+        return super.getStartTime();
     }
 
     @Override
@@ -66,9 +65,8 @@ public class Epic extends Task {
                     .min((Comparator.comparing(SubTask::getEndTime)))
                     .map(SubTask::getEndTime)
                     .orElseThrow();
-        } else {
-            return super.getEndTime();
         }
+        return super.getEndTime();
     }
 
     @Override
